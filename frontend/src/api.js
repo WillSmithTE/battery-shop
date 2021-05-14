@@ -23,4 +23,29 @@ export const api = {
 
         )
     },
+    deleteFromCart: async (title) => {
+        return await fetchJson(
+            `${BASE_URL}/cart/${title}`,
+            {
+                method: 'DELETE',
+            }
+
+        )
+    },
+    getTransactions: async () => {
+        return await fetchJson(`${BASE_URL}/transaction`)
+    },
+    submitTransaction: async (email) => {
+        return await fetchJson(
+            `${BASE_URL}/transaction`,
+            {
+                method: 'POST',
+                body: JSON.stringify({email}),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }
+
+        )
+    },
 };

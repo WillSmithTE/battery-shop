@@ -1,19 +1,20 @@
-import EnhancedTable from './component/EnhancedTable';
+import EnhancedTable from './table/EnhancedTable';
 import { Button, Form, Container, Header } from 'semantic-ui-react'
 import { api } from './api';
 
-export const BatteryList = ({ batteries, onAddToCart }) => {
+export const BatteryList = ({ items, onAddToCart }) => {
 
-    const addToCart = (battery) => {
-        api.addToCart(battery);
-        onAddToCart(battery);
+    const addToCart = async (battery) => {
+        await api.addToCart(battery);
+        await onAddToCart(battery);
     };
 
-    const withAddToCartButton = batteries.map((battery) => {
+    const withAddToCartButton = items.map((battery) => {
         return {
             ...battery,
             photo: <img style={{height: '4rem'}} src={battery.pictureUrl} alt='battery'/>,
-            addToCart: <Button onClick={() => addToCart(battery)}>Add to cart</Button>
+            addToCart: <Button onClick={() => addToCart(battery)}>Add to cart</Button>,
+            price: `$${battery.price}`,
         }
     });
 
@@ -21,6 +22,7 @@ export const BatteryList = ({ batteries, onAddToCart }) => {
         { id: 'title', label: 'Title' },
         { id: 'description', label: 'Description' },
         { id: 'photo', label: '' },
+        { id: 'price', label: 'Price' },
         { id: 'addToCart', label: ''},
     ];
 

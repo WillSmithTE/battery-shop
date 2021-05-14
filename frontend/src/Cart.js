@@ -1,21 +1,27 @@
 import { useEffect, useState } from "react";
+import { Button } from "semantic-ui-react";
 import { api } from "./api";
-import EnhancedTable from "./component/EnhancedTable";
+import EnhancedTable from "./table/EnhancedTable";
 
-export const Cart = ({items}) => {
+export const Cart = ({ items, deleteItem }) => {
 
-    const onlyTitle = items.map(({item, quantity}) => ({ title: item.title, quantity}))
+    const tableRows = items.map(({ item, quantity }) => ({
+        title: item.title,
+        quantity,
+        delete: <Button onClick={() => deleteItem(item.title)}>Remove</Button>
+    }));
 
     const headCells = [
         { id: 'title', label: 'Title' },
         { id: 'quantity', label: 'Quantity' },
+        { id: 'delete', label: '' },
     ];
 
     return <EnhancedTable
         title='Cart'
         orderBy='title'
         keyProp='title'
-        rows={onlyTitle}
+        rows={tableRows}
         headCells={headCells}
     />;
 }
