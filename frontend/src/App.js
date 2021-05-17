@@ -1,13 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css'
-import { Button, Form, Container, Header } from 'semantic-ui-react'
-import { useForm } from 'react-hook-form';
-import { api } from './api';
-import React, { useEffect, useState } from 'react';
-import { BatteryList } from './BatteryList';
-import { Cart } from './Cart';
-import { TransactionList } from './TransactionList';
+import {Button, Container, Form, Header} from 'semantic-ui-react'
+import {useForm} from 'react-hook-form';
+import {api} from './api';
+import React, {useEffect, useState} from 'react';
+import {BatteryList} from './BatteryList';
+import {Cart} from './Cart';
+import {TransactionList} from './TransactionList';
 
 function App() {
   const { handleSubmit, register, setValue } = useForm();
@@ -16,13 +15,14 @@ function App() {
   const [transactions, setTransactions] = useState([]);
   const [items, setItems] = React.useState([]);
 
-  const updateCart = () => api.getCart().then(({ items }) => setCartItems(items));
+  const updateCart = () => api.getCart().then(setCartItems);
   const updateTransactions = () => api.getTransactions().then(setTransactions);
 
   useEffect(() => {
-    api.searchBatteries().then((response) => setItems(response));
-    updateCart();
-    updateTransactions();
+    api.searchBatteries()
+        .then((response) => setItems(response))
+        .then(updateCart)
+        .then(updateTransactions);
   }, []);
 
   const onSearchSubmit = async ({ search }) => {
@@ -42,7 +42,7 @@ function App() {
     await updateCart();
   };
 
-  const cartSum = cartItems.reduce((sum, { item, quantity }) => sum + item.price * quantity, 0);
+  const cartPrice = cartItems.reduce((sum, { price, quantity }) => sum + price * quantity, 0);
 
   return (
     <div className="App">
@@ -62,7 +62,7 @@ function App() {
           </Form.Field>
           <Form.Field>
             <label>Cart total</label>
-            <input value={`$${cartSum}`} />
+            <input readOnly value={`$${cartPrice}`} />
           </Form.Field>
           <Button>Checkout cart</Button>
         </Form>

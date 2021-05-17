@@ -9,7 +9,7 @@ export const TransactionList = ({items}) => {
 
     const tableRows = items.map((item) => ({
         ...item,
-        price: `$${item.cart.items.reduce((sum, { item, quantity }) => sum + item.price * quantity, 0)}`
+        price: `$${item.price}`
     }));
 
     return <EnhancedTable

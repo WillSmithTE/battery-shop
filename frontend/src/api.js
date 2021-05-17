@@ -1,21 +1,21 @@
 const BASE_URL = process.env.NODE_ENV === 'development' ?
-    'http://localhost:8080' : 'https://rsvp-yo-4lec554gkq-as.a.run.app'
+    'http://localhost:8080' : 'todo'
 
-const fetchJson = (url, args = {}) => fetch(url, args).then((response) => response.json());
+const jsonFetch = (url, args = {}) => fetch(url, args).then((response) => response.json());
 
 export const api = {
     searchBatteries: async (search = '') => {
-        return await fetchJson(`${BASE_URL}/battery?search=${search}`)
+        return await jsonFetch(`${BASE_URL}/battery?search=${search}`)
     },
     getCart: async () => {
-        return await fetchJson(`${BASE_URL}/cart`)
+        return await jsonFetch(`${BASE_URL}/cart`)
     },
     addToCart: async (battery) => {
-        return await fetchJson(
+        return await fetch(
             `${BASE_URL}/cart`,
             {
                 method: 'POST',
-                body: JSON.stringify(battery),
+                body: JSON.stringify({ itemId: battery.id}),
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -24,7 +24,7 @@ export const api = {
         )
     },
     deleteFromCart: async (title) => {
-        return await fetchJson(
+        return await fetch(
             `${BASE_URL}/cart/${title}`,
             {
                 method: 'DELETE',
@@ -33,10 +33,10 @@ export const api = {
         )
     },
     getTransactions: async () => {
-        return await fetchJson(`${BASE_URL}/transaction`)
+        return await jsonFetch(`${BASE_URL}/transaction`)
     },
     submitTransaction: async (email) => {
-        return await fetchJson(
+        return await fetch(
             `${BASE_URL}/transaction`,
             {
                 method: 'POST',
